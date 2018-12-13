@@ -15,7 +15,7 @@ class Board extends React.Component {
     return (
       <Square
         value={this.props.squares[i]}
-        onClick={() => this.props.handleClick(i)}
+        onClick={() => this.props.onClick(i)}
       />
     );
   }
@@ -48,9 +48,9 @@ class Game extends React.Component {
     super(props);
     this.state = {
       history: [{
-        squares: Array(9).fill(null),
+        squares: Array(9).fill(null)
       }],
-      xIsNext: true,
+      xIsNext: true
     };
   }
 
@@ -64,7 +64,7 @@ class Game extends React.Component {
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([{
-        squares: squares,
+        squares: squares
       }]),
       xIsNext: !this.state.xIsNext,
     });
@@ -73,9 +73,7 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[history.length - 1];
-    let gameSquares = current.squares;
-    const winner = calculateWinner(gameSquares);
-    const boardIsFull = isBoardFull(gameSquares);
+    const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
       const desc = move ?
@@ -90,19 +88,18 @@ class Game extends React.Component {
 
     let status;
     if (winner) {
-      status = "Winner: " + winner;
+      status = 'Winner: ' + winner;
     } else {
-      if (boardIsFull) {
-        status = "No winner"
-      } else {
-        status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-      }
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board
+            squares={current.squares}
+            onClick={(i) => this.handleClick(i)}
+          />
         </div>
         <div className="game-info">
           <div>{status}</div>
@@ -113,7 +110,7 @@ class Game extends React.Component {
   }
 }
 
-// ======================================
+// ========================================
 
 ReactDOM.render(
   <Game />,
@@ -136,19 +133,6 @@ function calculateWinner(squares) {
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
-  }
-  return null;
-}
-
-function isBoardFull(squares) {
-  let numOfFullSquares = 0;
-  for (let i = 0; i < squares.length; i++) {
-    if (squares[i] != null) {
-      numOfFullSquares++;
-    }
-  }
-  if (numOfFullSquares === 9) {
-    return true;
   }
   return null;
 }
