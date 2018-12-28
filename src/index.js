@@ -20,27 +20,23 @@ class Board extends React.Component {
     );
   }
 
-  render() {
-    return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
+  createGameBoard(numofRows, numofColumns) {
+    let gameBoard = [];
+    let squareCount = 0;
+    // create rows
+    for (let i = 0; i < numofRows; i++) {
+      let rowCell = [];
+      for (let j = 0; j < numofColumns; j++) {
+        rowCell.push(this.renderSquare(squareCount++));
+      }
+      gameBoard.push(<div key={i} className="board-row">{rowCell}</div>)
+    }
+    return gameBoard;
   }
+
+  render() {
+    return <div>{this.createGameBoard(3,3)}</div>;
+  } 
 }
 
 class Game extends React.Component {
